@@ -1,0 +1,48 @@
+{
+  "name": "smartlearn-ai",
+  "version": "1.0.0",
+  "description": "AI-powered learning and developer productivity platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:auth\" \"npm run dev:learning\" \"npm run dev:code\" \"npm run dev:personalization\" \"npm run dev:analytics\" \"npm run dev:frontend\"",
+    "dev:auth": "cd services/auth && npm run dev",
+    "dev:learning": "cd services/learning-assistant && python -m uvicorn main:app --reload --port 8001",
+    "dev:code": "cd services/code-assistant && python -m uvicorn main:app --reload --port 8002",
+    "dev:personalization": "cd services/personalization && python -m uvicorn main:app --reload --port 8003",
+    "dev:analytics": "cd services/analytics && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:services && npm run build:frontend",
+    "build:services": "concurrently \"npm run build:auth\" \"npm run build:analytics\"",
+    "build:auth": "cd services/auth && npm run build",
+    "build:analytics": "cd services/analytics && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "test": "npm run test:services && npm run test:frontend",
+    "test:services": "concurrently \"npm run test:auth\" \"npm run test:analytics\" \"npm run test:python\"",
+    "test:auth": "cd services/auth && npm test",
+    "test:analytics": "cd services/analytics && npm test",
+    "test:python": "cd services && python -m pytest",
+    "test:frontend": "cd frontend && npm test",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "workspaces": [
+    "services/auth",
+    "services/analytics",
+    "frontend"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  },
+  "keywords": [
+    "ai",
+    "learning",
+    "education",
+    "developer-productivity",
+    "microservices"
+  ],
+  "author": "SmartLearn AI Team",
+  "license": "MIT"
+}
